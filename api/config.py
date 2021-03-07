@@ -8,6 +8,8 @@ DO NOT HARD CODE YOUR PRODUCTION URLS EVER. Either use creds.ini or use environm
 import os
 from api.core import get_pg_url
 
+basedir = os.path.abspath(__file__)
+
 # more configuration options here http://flask.pocoo.org/docs/1.0/config/
 class Config:
     """
@@ -30,11 +32,12 @@ class DevelopmentConfig(Config):
     """
 
     url = (
-        "postgresql://testusr:password@127.0.0.1:5432/testdb"
+       # "postgresql://testusr:password@127.0.0.1:5432/testdb"
+       # 'sqlite:///' + os.path.join(basedir, 'app.db')
+       'sqlite:///app.db'
     )  # set the URI to call get_pg_url() once you have `creds.ini` setup
     SQLALCHEMY_DATABASE_URI = url
     DEBUG = True
-
 
 class ProductionConfig(Config):
     """

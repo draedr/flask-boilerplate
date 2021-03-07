@@ -16,3 +16,12 @@ class Person(Mixin, db.Model):
 
     def __repr__(self):
         return f"<Person {self.name}>"
+
+    def __str__(self):
+        return self.username
+
+    def get_person_id(self):
+        return self.id
+
+    def check_password(self, password):
+        return password == 'valid'

@@ -2,6 +2,7 @@ from flask import Blueprint, request
 from api.models import db, Person, Email
 from api.core import create_response, serialize_list, logger
 from sqlalchemy import inspect
+from .oauth2 import authorization, require_oauth
 
 main = Blueprint("main", __name__)  # initialize blueprint
 
@@ -13,11 +14,14 @@ def index():
     # access the logger with the logger from api.core and uses the standard logging module
     # try using ipdb here :) you can inject yourself
     logger.info("Hello World!")
-    return "<h1>Hello World!</h1>"
+    return create_response(
+        message="Hello World!"
+    )
 
 
 # function that is called when you visit /persons
 @main.route("/persons", methods=["GET"])
+@require_oauth('profile')
 def get_persons():
     persons = Person.query.all()
     return create_response(data={"persons": serialize_list(persons)})
@@ -37,6 +41,8 @@ def create_person():
         msg = "No email provided for person."
         logger.info(msg)
         return create_response(status=422, message=msg)
+
+    print(data)
 
     # create SQLAlchemy Objects
     new_person = Person(name=data["name"])

@@ -1,3 +1,4 @@
+import os
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 from api import create_app
@@ -30,6 +31,7 @@ def recreate_db():
     when there's a new database instance. This shouldn't be
     used when you migrate your database.
     """
+
     db.drop_all()
     db.create_all()
     db.session.commit()
